@@ -1,5 +1,32 @@
 ## Rumble Python SDK (unofficial)
-Unofficial Python SDK for the Rumble Discovery Platform API.
+Unofficial Rumble Network Discovery Python SDK
+
+### Installation
+```bash
+pip install rumblesdk
+```
+
+### Unauthenticated Usage
+```python
+from rumblesdk.client import ApiClient
+
+
+client = ApiClient()
+client.releases().get_platform_version()
+```
+
+### Organization Key Usage
+
+```python
+import os
+
+from rumblesdk.auth import OrgKey
+from rumblesdk.client import ApiClient
+
+
+client = ApiClient(OrgKey(os.getenv("API_KEY")))
+win_assets = client.org().get_asset_list("os:windows")
+```
 
 ### License
 
