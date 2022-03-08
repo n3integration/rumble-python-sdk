@@ -18,7 +18,7 @@ class Api:
     """
 
     def execute(self, method, url, headers, data=None):
-        r = requests.request(method, url, headers=headers, data=data, allow_redirects = False, verify=False)
+        r = requests.request(method, url, headers=headers, data=data, allow_redirects=False, verify=True)
         if r.status_code == HTTPStatus.OK:
             return r.json()
         elif r.status_code == HTTPStatus.NO_CONTENT:
