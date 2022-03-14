@@ -1,7 +1,8 @@
 import os
 from http.client import HTTPConnection
 
-from ..auth import AccessToken, Auth, Nil, OrgKey, ExportToken
+from .http import CONTENT_TYPE, USER_AGENT, ACCEPT, JSON
+from ..auth import Auth, Nil, OrgKey, ExportToken
 from ..config import Client
 from ..exception import AuthException
 
@@ -12,11 +13,11 @@ from .releases import Releases
 
 
 class ApiClient:
-    def __init__(self, auth:Auth = Nil()):
+    def __init__(self, auth: Auth = Nil()):
         self.headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "User-Agent": Client.USER_AGENT_STRING
+            ACCEPT: JSON,
+            CONTENT_TYPE: JSON,
+            USER_AGENT: Client.USER_AGENT_STRING
         }
         self.__auth = auth
         self.__auth.authorize(self.headers)
@@ -44,7 +45,10 @@ class ApiClient:
         raise Exception("not implemented")
 
     def export(self):
-        raise Exception("not implemented")
+        if isinstance(self.__auth, OrgKey) or isinstance(self.__auth, ExportToken):
+            return self.__export
+        else:
+            raise AuthException("Export API requires an organization key or export token")
 
     def org(self):
         if isinstance(self.__auth, OrgKey):
