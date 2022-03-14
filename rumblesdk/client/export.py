@@ -65,19 +65,19 @@ class Export(Api):
         params = ""
         if criteria is not None or fields is not None:
             params = parse.urlencode({'fields': fields, 'search': criteria})
-        return self.execute(GET, f"{self.baseUrl}/export/org/wireless.json?{params}", self.headers)
+        return self.execute(GET, f"{self.baseUrl}/org/wireless.json?{params}", self.headers)
 
     def get_wireless_csv(self, criteria: str = None):
         params = ""
         if criteria is not None:
             params = parse.urlencode({'search': criteria})
-        return self.execute(GET, f"{self.baseUrl}/export/org/wireless.csv?{params}", self.headers)
+        return self.execute(GET, f"{self.baseUrl}/org/wireless.csv?{params}", self.headers)
 
     def get_top_assets_csv(self, criteria: str = "types"):
         supported_criteria = ["hw", "os", "tags", "types"]
         if criteria not in supported_criteria:
             raise ApiException()
-        return self.execute(GET, f"{self.baseUrl}/export/org/assets/top.{criteria}.csv", self.headers)
+        return self.execute(GET, f"{self.baseUrl}/org/assets/top.{criteria}.csv", self.headers)
 
     def get_top_services_csv(self, criteria: str = "products"):
         supported_criteria = ["products", "protocols", "tcp", "udp"]
