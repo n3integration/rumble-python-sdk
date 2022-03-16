@@ -2,7 +2,7 @@ import os
 from http.client import HTTPConnection
 
 from .http import CONTENT_TYPE, USER_AGENT, ACCEPT, JSON
-from ..auth import Auth, Nil, OrgKey, ExportToken
+from ..auth import Auth, Nil, OrgKey, ExportToken, AccessToken
 from ..config import Client
 from ..exception import AuthException
 
@@ -42,7 +42,10 @@ class ApiClient:
         self.__auth = auth
 
     def account(self):
-        raise Exception("not implemented")
+        if isinstance(self.__auth, AccessToken):
+            return self.__account
+        else:
+            raise AuthException("Access token is required")
 
     def export(self):
         if isinstance(self.__auth, OrgKey) or isinstance(self.__auth, ExportToken):

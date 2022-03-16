@@ -2,7 +2,7 @@ from urllib import parse
 
 from .api import Api, GET, returns
 from ..config import API
-from ..exception import ApiException
+from ..exception import ClientApiException
 from ..models.asset import Asset
 from ..models.service import Service
 from ..models.site import Site
@@ -76,13 +76,13 @@ class Export(Api):
     def get_top_assets_csv(self, criteria: str = "types"):
         supported_criteria = ["hw", "os", "tags", "types"]
         if criteria not in supported_criteria:
-            raise ApiException()
+            raise ClientApiException(f"invalid top asset request criteria; try one of: {','.join(supported_criteria)}")
         return self.execute(GET, f"{self.baseUrl}/org/assets/top.{criteria}.csv", self.headers)
 
     def get_top_services_csv(self, criteria: str = "products"):
         supported_criteria = ["products", "protocols", "tcp", "udp"]
         if criteria not in supported_criteria:
-            raise ApiException()
+            raise ClientApiException(f"invalid top service request criteria; try one of: {','.join(supported_criteria)}")
         return self.execute(GET, f"{self.baseUrl}/org/services/top.{criteria}.csv", self.headers)
 
     def get_subnet_utilization_csv(self, mask: str = None):
